@@ -70,6 +70,7 @@ func NewTxCmd(legacyPropCmds []*cobra.Command) *cobra.Command {
 		NewCmdVote(),
 		NewCmdWeightedVote(),
 		NewCmdSubmitProposal(),
+		NewCmdCreateDraftProposal(),
 
 		// Deprecated
 		cmdSubmitLegacyProp,
@@ -358,4 +359,10 @@ $ %s tx gov weighted-vote 1 yes=0.6,no=0.3,abstain=0.05,no_with_veto=0.05 --from
 	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
+}
+
+// NewCmdCreateDraftProposal let you generate the proposal json file in an intuitive way
+func NewCmdCreateDraftProposal() *cobra.Command {
+
+	return nil
 }
