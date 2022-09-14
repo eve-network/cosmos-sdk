@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 )
 
 func TestParams_ValidateBasic(t *testing.T) {
@@ -45,5 +44,5 @@ func TestParams_ValidateBasic(t *testing.T) {
 }
 
 func TestDefaultParams(t *testing.T) {
-	require.NoError(t, types.DefaultParams().ValidateBasic())
+	require.NoError(t, DefaultParams().ValidateBasic())
 }

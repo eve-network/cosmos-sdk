@@ -2,6 +2,7 @@ package types
 
 // staking module event types
 const (
+	EventTypeCancelUnbondingDelegation   = "cancel_unbonding_delegation"
 	EventTypeCompleteUnbonding           = "complete_unbonding"
 	EventTypeCompleteRedelegation        = "complete_redelegation"
 	EventTypeCreateValidator             = "create_validator"
@@ -20,6 +21,7 @@ const (
 	AttributeKeyDstValidator   = "destination_validator"
 	AttributeKeyDelegator      = "delegator"
 	AttributeKeyCompletionTime = "completion_time"
+	AttributeKeyCreationHeight = "creation_height"
 	AttributeKeyNewShares      = "new_shares"
 	AttributeKeyShareOwner     = "share_owner"
 	AttributeKeyShareRecordId  = "share_record_id"

@@ -6,7 +6,7 @@ package types
 import (
 	encoding_json "encoding/json"
 	fmt "fmt"
-	_ "github.com/gogo/protobuf/gogoproto"
+	_ "github.com/cosmos/gogoproto/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
@@ -71,7 +71,7 @@ func (m *GenesisState) GetGenTxs() []encoding_json.RawMessage {
 }
 
 func init() {
-	// proto.RegisterType((*GenesisState)(nil), "cosmos.genutil.v1beta1.GenesisState")
+	proto.RegisterType((*GenesisState)(nil), "cosmos.genutil.v1beta1.GenesisState")
 }
 
 func init() {

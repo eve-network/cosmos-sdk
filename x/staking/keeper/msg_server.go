@@ -16,7 +16,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	vesting "github.com/cosmos/cosmos-sdk/x/auth/vesting/exported"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	types "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 type msgServer struct {

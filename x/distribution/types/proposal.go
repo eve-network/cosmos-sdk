@@ -5,8 +5,7 @@ import (
 	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkdistr "github.com/cosmos/cosmos-sdk/x/distribution/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	govv1beta1 "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
 )
 
 const (
@@ -15,12 +14,12 @@ const (
 )
 
 // Assert CommunityPoolSpendProposal implements govtypes.Content at compile-time
-var _ govtypes.Content = &CommunityPoolSpendProposal{}
+var _ govv1beta1.Content = &CommunityPoolSpendProposal{}
 
 func init() {
 	// already registered in cosmos
-	// govtypes.RegisterProposalType(ProposalTypeCommunityPoolSpend)
-	// govtypes.RegisterProposalTypeCodec(&CommunityPoolSpendProposal{}, "cosmos-sdk/CommunityPoolSpendProposal")
+	govv1beta1.RegisterProposalType(ProposalTypeCommunityPoolSpend)
+	// govv1.RegisterProposalTypeCodec(&CommunityPoolSpendProposal{}, "cosmos-sdk/CommunityPoolSpendProposal") //TODO: determine if we need to register this and how
 }
 
 // NewCommunityPoolSpendProposal creates a new community pool spend proposal.
@@ -44,15 +43,15 @@ func (csp *CommunityPoolSpendProposal) ProposalType() string { return ProposalTy
 
 // ValidateBasic runs basic stateless validity checks
 func (csp *CommunityPoolSpendProposal) ValidateBasic() error {
-	err := govtypes.ValidateAbstract(csp)
+	err := govv1beta1.ValidateAbstract(csp)
 	if err != nil {
 		return err
 	}
 	if !csp.Amount.IsValid() {
-		return sdkdistr.ErrInvalidProposalAmount
+		return ErrInvalidProposalAmount
 	}
 	if csp.Recipient == "" {
-		return sdkdistr.ErrEmptyProposalRecipient
+		return ErrEmptyProposalRecipient
 	}
 
 	return nil
