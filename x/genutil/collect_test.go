@@ -15,8 +15,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	"github.com/cosmos/cosmos-sdk/types"
 	bankexported "github.com/cosmos/cosmos-sdk/x/bank/exported"
-	"github.com/cosmos/cosmos-sdk/x/genutil"
-	gtypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
+	"github.com/iqlusioninc/liquidity-staking-module/x/genutil"
+	gtypes "github.com/iqlusioninc/liquidity-staking-module/x/genutil/types"
 )
 
 type doNothingUnmarshalJSON struct {
@@ -45,7 +45,7 @@ func TestCollectTxsHandlesDirectories(t *testing.T) {
 
 	// 1. We'll insert a directory as the first element before JSON file.
 	subDirPath := filepath.Join(testDir, "_adir")
-	if err := os.MkdirAll(subDirPath, 0o755); err != nil {
+	if err := os.MkdirAll(subDirPath, 0755); err != nil {
 		t.Fatal(err)
 	}
 

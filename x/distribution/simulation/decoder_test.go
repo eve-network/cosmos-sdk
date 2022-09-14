@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
-	"github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/kv"
-	"github.com/cosmos/cosmos-sdk/x/distribution/simulation"
-	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
+	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/simulation"
+	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 var (

@@ -4,7 +4,7 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/slashing/types"
+	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
 )
 
 // SignedBlocksWindow - sliding window for downtime slashing

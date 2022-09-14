@@ -23,9 +23,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/version"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
-	"github.com/cosmos/cosmos-sdk/x/genutil"
-	"github.com/cosmos/cosmos-sdk/x/genutil/types"
-	"github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	"github.com/iqlusioninc/liquidity-staking-module/x/genutil"
+	"github.com/iqlusioninc/liquidity-staking-module/x/genutil/types"
+	"github.com/iqlusioninc/liquidity-staking-module/x/staking/client/cli"
 )
 
 // GenTxCmd builds the application's gentx command.
@@ -130,7 +130,9 @@ $ %s gentx my-key-name 1000000stake --home=/path/to/home/dir --keyring-backend=o
 			}
 
 			txFactory := tx.NewFactoryCLI(clientCtx, cmd.Flags())
-
+			if err != nil {
+				return errors.Wrap(err, "error creating tx builder")
+			}
 			pub, err := key.GetAddress()
 			if err != nil {
 				return err
@@ -164,10 +166,6 @@ $ %s gentx my-key-name 1000000stake --home=/path/to/home/dir --keyring-backend=o
 			// write the unsigned transaction to the buffer
 			w := bytes.NewBuffer([]byte{})
 			clientCtx = clientCtx.WithOutput(w)
-
-			if err = msg.ValidateBasic(); err != nil {
-				return err
-			}
 
 			if err = txBldr.PrintUnsignedTx(clientCtx, msg); err != nil {
 				return errors.Wrap(err, "failed to print unsigned std tx")
@@ -218,7 +216,7 @@ $ %s gentx my-key-name 1000000stake --home=/path/to/home/dir --keyring-backend=o
 
 func makeOutputFilepath(rootDir, nodeID string) (string, error) {
 	writePath := filepath.Join(rootDir, "config", "gentx")
-	if err := tmos.EnsureDir(writePath, 0o700); err != nil {
+	if err := tmos.EnsureDir(writePath, 0700); err != nil {
 		return "", err
 	}
 
@@ -240,7 +238,7 @@ func readUnsignedGenTxFile(clientCtx client.Context, r io.Reader) (sdk.Tx, error
 }
 
 func writeSignedGenTx(clientCtx client.Context, outputDocument string, tx sdk.Tx) error {
-	outputFile, err := os.OpenFile(outputDocument, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+	outputFile, err := os.OpenFile(outputDocument, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}

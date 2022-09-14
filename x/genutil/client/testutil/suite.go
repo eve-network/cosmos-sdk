@@ -1,6 +1,7 @@
 package testutil
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -8,15 +9,16 @@ import (
 
 	"github.com/stretchr/testify/suite"
 
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/cosmos/cosmos-sdk/simapp"
-	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/cosmos/cosmos-sdk/testutil"
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
-	stakingcli "github.com/cosmos/cosmos-sdk/x/staking/client/cli"
-	"github.com/cosmos/cosmos-sdk/x/staking/types"
+	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
+	"github.com/iqlusioninc/liquidity-staking-module/x/genutil/client/cli"
+	stakingcli "github.com/iqlusioninc/liquidity-staking-module/x/staking/client/cli"
+	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 type IntegrationTestSuite struct {
@@ -48,97 +50,84 @@ func (s *IntegrationTestSuite) TearDownSuite() {
 
 func (s *IntegrationTestSuite) TestGenTxCmd() {
 	val := s.network.Validators[0]
-	clientCtx := val.ClientCtx
+	dir := s.T().TempDir()
+
+	cmd := cli.GenTxCmd(
+		simapp.ModuleBasics,
+		val.ClientCtx.TxConfig, banktypes.GenesisBalancesIterator{}, val.ClientCtx.HomeDir)
+
+	_, out := testutil.ApplyMockIO(cmd)
+	clientCtx := val.ClientCtx.WithOutput(out)
+
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, client.ClientContextKey, &clientCtx)
+
 	amount := sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(12))
+	genTxFile := filepath.Join(dir, "myTx")
+	cmd.SetArgs([]string{
+		fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
+		fmt.Sprintf("--%s=%s", flags.FlagOutputDocument, genTxFile),
+		val.Moniker,
+		amount.String(),
+	})
 
-	tests := []struct {
-		name     string
-		args     []string
-		expError bool
-	}{
-		{
-			name: "invalid commission rate returns error",
-			args: []string{
-				fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
-				fmt.Sprintf("--%s=1", stakingcli.FlagCommissionRate),
-				val.Moniker,
-				amount.String(),
-			},
-			expError: true,
-		},
-		{
-			name: "valid gentx",
-			args: []string{
-				fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
-				val.Moniker,
-				amount.String(),
-			},
-			expError: false,
-		},
-		{
-			name: "invalid pubkey",
-			args: []string{
-				fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
-				fmt.Sprintf("--%s={\"key\":\"BOIkjkFruMpfOFC9oNPhiJGfmY2pHF/gwHdLDLnrnS0=\"}", stakingcli.FlagPubKey),
-				val.Moniker,
-				amount.String(),
-			},
-			expError: true,
-		},
-		{
-			name: "valid pubkey flag",
-			args: []string{
-				fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
-				fmt.Sprintf("--%s={\"@type\":\"/cosmos.crypto.ed25519.PubKey\",\"key\":\"BOIkjkFruMpfOFC9oNPhiJGfmY2pHF/gwHdLDLnrnS0=\"}", stakingcli.FlagPubKey),
-				val.Moniker,
-				amount.String(),
-			},
-			expError: false,
-		},
-	}
+	err := cmd.ExecuteContext(ctx)
+	s.Require().NoError(err)
 
-	for _, tc := range tests {
-		tc := tc
+	// validate generated transaction.
+	open, err := os.Open(genTxFile)
+	s.Require().NoError(err)
 
-		dir := s.T().TempDir()
-		genTxFile := filepath.Join(dir, "myTx")
-		tc.args = append(tc.args, fmt.Sprintf("--%s=%s", flags.FlagOutputDocument, genTxFile))
+	all, err := io.ReadAll(open)
+	s.Require().NoError(err)
 
-		s.Run(tc.name, func() {
-			cmd := cli.GenTxCmd(
-				simapp.ModuleBasics,
-				val.ClientCtx.TxConfig,
-				banktypes.GenesisBalancesIterator{},
-				val.ClientCtx.HomeDir)
+	tx, err := val.ClientCtx.TxConfig.TxJSONDecoder()(all)
+	s.Require().NoError(err)
 
-			out, err := clitestutil.ExecTestCLICmd(clientCtx, cmd, tc.args)
+	msgs := tx.GetMsgs()
+	s.Require().Len(msgs, 1)
 
-			if tc.expError {
-				s.Require().Error(err)
+	s.Require().Equal(sdk.MsgTypeURL(&types.MsgCreateValidator{}), sdk.MsgTypeURL(msgs[0]))
+	s.Require().True(val.Address.Equals(msgs[0].GetSigners()[0]))
+	s.Require().Equal(amount, msgs[0].(*types.MsgCreateValidator).Value)
+	s.Require().NoError(tx.ValidateBasic())
+}
 
-				_, err = os.Open(genTxFile)
-				s.Require().Error(err)
-			} else {
-				s.Require().NoError(err, "test: %s\noutput: %s", tc.name, out.String())
+func (s *IntegrationTestSuite) TestGenTxCmdPubkey() {
+	val := s.network.Validators[0]
+	dir := s.T().TempDir()
 
-				// validate generated transaction.
-				open, err := os.Open(genTxFile)
-				s.Require().NoError(err)
+	cmd := cli.GenTxCmd(
+		simapp.ModuleBasics,
+		val.ClientCtx.TxConfig,
+		banktypes.GenesisBalancesIterator{},
+		val.ClientCtx.HomeDir,
+	)
 
-				all, err := io.ReadAll(open)
-				s.Require().NoError(err)
+	_, out := testutil.ApplyMockIO(cmd)
+	clientCtx := val.ClientCtx.WithOutput(out)
 
-				tx, err := val.ClientCtx.TxConfig.TxJSONDecoder()(all)
-				s.Require().NoError(err)
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, client.ClientContextKey, &clientCtx)
 
-				msgs := tx.GetMsgs()
-				s.Require().Len(msgs, 1)
+	amount := sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(12))
+	genTxFile := filepath.Join(dir, "myTx")
 
-				s.Require().Equal(sdk.MsgTypeURL(&types.MsgCreateValidator{}), sdk.MsgTypeURL(msgs[0]))
-				s.Require().True(val.Address.Equals(msgs[0].GetSigners()[0]))
-				s.Require().Equal(amount, msgs[0].(*types.MsgCreateValidator).Value)
-				s.Require().NoError(tx.ValidateBasic())
-			}
-		})
-	}
+	cmd.SetArgs([]string{
+		fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
+		fmt.Sprintf("--%s=%s", flags.FlagOutputDocument, genTxFile),
+		fmt.Sprintf("--%s={\"key\":\"BOIkjkFruMpfOFC9oNPhiJGfmY2pHF/gwHdLDLnrnS0=\"}", stakingcli.FlagPubKey),
+		val.Moniker,
+		amount.String(),
+	})
+	s.Require().Error(cmd.ExecuteContext(ctx))
+
+	cmd.SetArgs([]string{
+		fmt.Sprintf("--%s=%s", flags.FlagChainID, s.network.Config.ChainID),
+		fmt.Sprintf("--%s=%s", flags.FlagOutputDocument, genTxFile),
+		fmt.Sprintf("--%s={\"@type\":\"/cosmos.crypto.ed25519.PubKey\",\"key\":\"BOIkjkFruMpfOFC9oNPhiJGfmY2pHF/gwHdLDLnrnS0=\"}", stakingcli.FlagPubKey),
+		val.Moniker,
+		amount.String(),
+	})
+	s.Require().NoError(cmd.ExecuteContext(ctx))
 }

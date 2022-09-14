@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	stakingcli "github.com/cosmos/cosmos-sdk/x/staking/client/cli"
+	stakingcli "github.com/iqlusioninc/liquidity-staking-module/x/staking/client/cli"
 )
 
 var commonArgs = []string{
@@ -18,7 +18,9 @@ var commonArgs = []string{
 }
 
 // MsgRedelegateExec creates a redelegate message.
-func MsgRedelegateExec(clientCtx client.Context, from, src, dst, amount fmt.Stringer, extraArgs ...string) (testutil.BufferWriter, error) {
+func MsgRedelegateExec(clientCtx client.Context, from, src, dst, amount fmt.Stringer,
+	extraArgs ...string) (testutil.BufferWriter, error) {
+
 	args := []string{
 		src.String(),
 		dst.String(),
@@ -34,8 +36,8 @@ func MsgRedelegateExec(clientCtx client.Context, from, src, dst, amount fmt.Stri
 
 // MsgUnbondExec creates a unbond message.
 func MsgUnbondExec(clientCtx client.Context, from fmt.Stringer, valAddress,
-	amount fmt.Stringer, extraArgs ...string,
-) (testutil.BufferWriter, error) {
+	amount fmt.Stringer, extraArgs ...string) (testutil.BufferWriter, error) {
+
 	args := []string{
 		valAddress.String(),
 		amount.String(),
