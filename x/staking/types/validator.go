@@ -59,6 +59,7 @@ func NewValidator(operator sdk.ValAddress, pubKey cryptotypes.PubKey, descriptio
 		Commission:           NewCommission(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
 		TotalExemptShares:    sdk.ZeroDec(),
 		TotalTokenizedShares: sdk.ZeroDec(),
+		MinSelfDelegation: math.OneInt(),
 	}, nil
 }
 
