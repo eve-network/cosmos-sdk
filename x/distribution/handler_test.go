@@ -3,10 +3,10 @@ package distribution_test
 import (
 	"testing"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )

@@ -6,13 +6,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
+	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 // tests GetDelegation, GetDelegatorDelegations, SetDelegation, RemoveDelegation, GetDelegatorDelegations
@@ -31,7 +31,7 @@ func TestDelegation(t *testing.T) {
 	addrDels := simapp.AddTestAddrsIncremental(app, ctx, 3, sdk.NewInt(10000))
 	valAddrs := simapp.ConvertAddrsToValAddrs(addrDels)
 
-	//construct the validators
+	// construct the validators
 	amts := []sdk.Int{sdk.NewInt(9), sdk.NewInt(8), sdk.NewInt(7)}
 	var validators [3]types.Validator
 	for i, amt := range amts {

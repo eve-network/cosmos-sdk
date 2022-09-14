@@ -9,9 +9,9 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkdistr "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 // Keeper of the distribution store

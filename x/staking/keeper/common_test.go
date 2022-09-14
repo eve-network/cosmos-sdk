@@ -7,16 +7,14 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
-var (
-	PKs = simapp.CreateTestPubKeys(500)
-)
+var PKs = simapp.CreateTestPubKeys(500)
 
 func init() {
 	sdk.DefaultPowerReduction = sdk.NewIntFromBigInt(new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil))

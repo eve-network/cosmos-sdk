@@ -13,8 +13,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/simulation"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // TestRandomizedGenState tests the normal scenario of applying RandomizedGenState.
@@ -96,7 +96,8 @@ func TestRandomizedGenState1(t *testing.T) {
 				Accounts:     simtypes.RandomAccounts(r, 3),
 				InitialStake: sdk.NewInt(1000),
 				GenState:     make(map[string]json.RawMessage),
-			}, "invalid memory address or nil pointer dereference"},
+			}, "invalid memory address or nil pointer dereference",
+		},
 	}
 
 	for _, tt := range tests {

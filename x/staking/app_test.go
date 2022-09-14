@@ -7,12 +7,12 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 func checkValidator(t *testing.T, app *simapp.SimApp, addr sdk.ValAddress, expFound bool) types.Validator {
@@ -27,7 +27,6 @@ func checkDelegation(
 	t *testing.T, app *simapp.SimApp, delegatorAddr sdk.AccAddress,
 	validatorAddr sdk.ValAddress, expFound bool, expShares sdk.Dec,
 ) {
-
 	ctxCheck := app.BaseApp.NewContext(true, tmproto.Header{})
 	delegation, found := app.StakingKeeper.GetDelegation(ctxCheck, delegatorAddr, validatorAddr)
 	if expFound {

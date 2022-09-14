@@ -11,9 +11,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
-	stakingkeeper "github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/slashing/keeper"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 )
 
 // Simulation operation weights constants

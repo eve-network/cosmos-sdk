@@ -11,16 +11,16 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/secp256k1"
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	distrtypes "github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // // TestWeightedOperations tests the weights of the operations.
@@ -328,5 +328,4 @@ func setupValidatorRewards(app *simapp.SimApp, ctx sdk.Context, valAddress sdk.V
 	// setup current revards
 	currentRewards := distrtypes.NewValidatorCurrentRewards(decCoins, 3)
 	app.DistrKeeper.SetValidatorCurrentRewards(ctx, valAddress, currentRewards)
-
 }

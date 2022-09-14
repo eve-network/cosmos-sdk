@@ -6,15 +6,15 @@ import (
 	"github.com/stretchr/testify/require"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking"
-	stakingkeeper "github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	stakingtypes "github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 func TestCalculateRewardsBasic(t *testing.T) {

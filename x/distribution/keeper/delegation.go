@@ -5,9 +5,9 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkdistr "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 // initialize starting info for a new delegation

@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/simulation"
 
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 )
 
 const (

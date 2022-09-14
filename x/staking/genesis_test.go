@@ -6,12 +6,12 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 func bootstrapGenesisTest(t *testing.T, numAddrs int) (*simapp.SimApp, sdk.Context, []sdk.AccAddress) {

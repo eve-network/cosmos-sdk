@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkslashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 )
 
 // Unjail calls the staking Unjail function to unjail a validator if the
@@ -10,18 +10,18 @@ import (
 func (k Keeper) Unjail(ctx sdk.Context, validatorAddr sdk.ValAddress) error {
 	validator := k.sk.Validator(ctx, validatorAddr)
 	if validator == nil {
-		return sdkslashingtypes.ErrNoValidatorForAddress
+		return types.ErrNoValidatorForAddress
 	}
 
 	// cannot be unjailed if no self-delegation exists
 	selfDel := k.sk.Delegation(ctx, sdk.AccAddress(validatorAddr), validatorAddr)
 	if selfDel == nil {
-		return sdkslashingtypes.ErrMissingSelfDelegation
+		return types.ErrMissingSelfDelegation
 	}
 
 	// cannot be unjailed if not jailed
 	if !validator.IsJailed() {
-		return sdkslashingtypes.ErrValidatorNotJailed
+		return types.ErrValidatorNotJailed
 	}
 
 	consAddr, err := validator.GetConsAddr()
@@ -40,12 +40,12 @@ func (k Keeper) Unjail(ctx sdk.Context, validatorAddr sdk.ValAddress) error {
 	if found {
 		// cannot be unjailed if tombstoned
 		if info.Tombstoned {
-			return sdkslashingtypes.ErrValidatorJailed
+			return types.ErrValidatorJailed
 		}
 
 		// cannot be unjailed until out of jail
 		if ctx.BlockHeader().Time.Before(info.JailedUntil) {
-			return sdkslashingtypes.ErrValidatorJailed
+			return types.ErrValidatorJailed
 		}
 	}
 

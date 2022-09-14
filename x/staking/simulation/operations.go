@@ -10,9 +10,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 const (
@@ -440,37 +439,37 @@ func SimulateMsgCancelUnbondingDelegate(ak types.AccountKeeper, bk types.BankKee
 		// get random validator
 		validator, ok := keeper.RandomValidator(r, k, ctx)
 		if !ok {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "validator is not ok"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "validator is not ok"), nil, nil
 		}
 
 		if validator.IsJailed() || validator.InvalidExRate() {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "validator is jailed"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "validator is jailed"), nil, nil
 		}
 
 		valAddr := validator.GetOperator()
 		unbondingDelegation, found := k.GetUnbondingDelegation(ctx, simAccount.Address, valAddr)
 		if !found {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "account does have any unbonding delegation"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "account does have any unbonding delegation"), nil, nil
 		}
 
 		// get random unbonding delegation entry at block height
 		unbondingDelegationEntry := unbondingDelegation.Entries[r.Intn(len(unbondingDelegation.Entries))]
 
 		if unbondingDelegationEntry.CompletionTime.Before(ctx.BlockTime()) {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "unbonding delegation is already processed"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "unbonding delegation is already processed"), nil, nil
 		}
 
 		if !unbondingDelegationEntry.Balance.IsPositive() {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "delegator receiving balance is negative"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "delegator receiving balance is negative"), nil, nil
 		}
 
 		cancelBondAmt := simtypes.RandomAmount(r, unbondingDelegationEntry.Balance)
 
 		if cancelBondAmt.IsZero() {
-			return simtypes.NoOpMsg(types.ModuleName, sdkstaking.TypeMsgCancelUnbondingDelegation, "cancelBondAmt amount is zero"), nil, nil
+			return simtypes.NoOpMsg(types.ModuleName, types.TypeMsgCancelUnbondingDelegation, "cancelBondAmt amount is zero"), nil, nil
 		}
 
-		msg := sdkstaking.NewMsgCancelUnbondingDelegation(
+		msg := types.NewMsgCancelUnbondingDelegation(
 			simAccount.Address, valAddr, unbondingDelegationEntry.CreationHeight, sdk.NewCoin(k.BondDenom(ctx), cancelBondAmt),
 		)
 

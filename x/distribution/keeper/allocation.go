@@ -6,8 +6,8 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 // AllocateTokens handles distribution of the collected fees

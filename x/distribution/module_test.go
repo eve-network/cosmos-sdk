@@ -10,9 +10,9 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 )
 
 func TestItCreatesModuleAccountOnInitBlock(t *testing.T) {

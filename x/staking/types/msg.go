@@ -6,7 +6,6 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // staking message types
@@ -106,7 +105,7 @@ func (msg MsgCreateValidator) ValidateBasic() error {
 	}
 
 	if msg.Pubkey == nil {
-		return sdkstaking.ErrEmptyValidatorPubKey
+		return ErrEmptyValidatorPubKey
 	}
 
 	if !msg.Value.IsValid() || !msg.Value.Amount.IsPositive() {
@@ -135,6 +134,7 @@ func (msg MsgCreateValidator) UnpackInterfaces(unpacker codectypes.AnyUnpacker) 
 }
 
 // NewMsgEditValidator creates a new MsgEditValidator instance
+//
 //nolint:interfacer
 func NewMsgEditValidator(valAddr sdk.ValAddress, description Description, newRate *sdk.Dec) *MsgEditValidator {
 	return &MsgEditValidator{
@@ -182,6 +182,7 @@ func (msg MsgEditValidator) ValidateBasic() error {
 }
 
 // NewMsgDelegate creates a new MsgDelegate instance.
+//
 //nolint:interfacer
 func NewMsgDelegate(delAddr sdk.AccAddress, valAddr sdk.ValAddress, amount sdk.Coin) *MsgDelegate {
 	return &MsgDelegate{
@@ -232,6 +233,7 @@ func (msg MsgDelegate) ValidateBasic() error {
 }
 
 // NewMsgBeginRedelegate creates a new MsgBeginRedelegate instance.
+//
 //nolint:interfacer
 func NewMsgBeginRedelegate(
 	delAddr sdk.AccAddress, valSrcAddr, valDstAddr sdk.ValAddress, amount sdk.Coin,
@@ -288,6 +290,7 @@ func (msg MsgBeginRedelegate) ValidateBasic() error {
 }
 
 // NewMsgUndelegate creates a new MsgUndelegate instance.
+//
 //nolint:interfacer
 func NewMsgUndelegate(delAddr sdk.AccAddress, valAddr sdk.ValAddress, amount sdk.Coin) *MsgUndelegate {
 	return &MsgUndelegate{
@@ -433,6 +436,7 @@ func (msg MsgTransferTokenizeShareRecord) ValidateBasic() error {
 }
 
 // NewMsgCancelUnbondingDelegation creates a new MsgCancelUnbondingDelegation instance.
+//
 //nolint:interfacer
 func NewMsgCancelUnbondingDelegation(delAddr sdk.AccAddress, valAddr sdk.ValAddress, creationHeight int64, amount sdk.Coin) *MsgCancelUnbondingDelegation {
 	return &MsgCancelUnbondingDelegation{
@@ -487,6 +491,7 @@ func (msg MsgCancelUnbondingDelegation) ValidateBasic() error {
 }
 
 // NewMsgExemptDelegation creates a new MsgExemptDelegation instance.
+//
 //nolint:interfacer
 func NewMsgExemptDelegation(delAddr sdk.AccAddress, valAddr sdk.ValAddress) *MsgExemptDelegation {
 	return &MsgExemptDelegation{

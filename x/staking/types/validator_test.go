@@ -14,9 +14,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 func TestValidatorTestEquivalent(t *testing.T) {
@@ -122,7 +122,6 @@ func TestAddTokensValidatorUnbonding(t *testing.T) {
 }
 
 func TestAddTokensValidatorUnbonded(t *testing.T) {
-
 	validator := newValidator(t, valAddr1, pk1)
 	validator = validator.UpdateStatus(sdkstaking.Unbonded)
 	validator, delShares := validator.AddTokensFromDel(sdk.NewInt(10))

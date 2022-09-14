@@ -5,11 +5,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
-	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
 )
 
 func bootstrapHandlerGenesisTest(t *testing.T, power int64, numAddrs int, accAmount sdk.Int) (*simapp.SimApp, sdk.Context, []sdk.AccAddress, []sdk.ValAddress) {

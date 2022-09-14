@@ -10,15 +10,15 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
+	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	simappparams "github.com/iqlusioninc/liquidity-staking-module/app/params"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
-	distrtypes "github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
-	stakingtypes "github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution/simulation"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
+	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // TestWeightedOperations tests the weights of the operations.
@@ -61,7 +61,6 @@ func (suite *SimTestSuite) TestWeightedOperations() {
 // TestSimulateMsgSetWithdrawAddress tests the normal scenario of a valid message of type TypeMsgSetWithdrawAddress.
 // Abonormal scenarios, where the message is created by an errors, are not tested here.
 func (suite *SimTestSuite) TestSimulateMsgSetWithdrawAddress() {
-
 	// setup 3 accounts
 	s := rand.NewSource(1)
 	r := rand.New(s)
@@ -279,7 +278,6 @@ func (suite *SimTestSuite) setupValidatorRewards(valAddress sdk.ValAddress) {
 	// setup current revards
 	currentRewards := distrtypes.NewValidatorCurrentRewards(decCoins, 3)
 	suite.app.DistrKeeper.SetValidatorCurrentRewards(suite.ctx, valAddress, currentRewards)
-
 }
 
 func TestSimTestSuite(t *testing.T) {

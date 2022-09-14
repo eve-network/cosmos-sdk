@@ -11,14 +11,14 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank/testutil"
+	"github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
 )
 
 func newMonikerValidator(t testing.TB, operator sdk.ValAddress, pubKey cryptotypes.PubKey, moniker string) types.Validator {
@@ -253,7 +253,7 @@ func TestSlashToZeroPowerRemoved(t *testing.T) {
 func TestValidatorBasics(t *testing.T) {
 	app, ctx, _, addrVals := bootstrapValidatorTest(t, 1000, 20)
 
-	//construct the validators
+	// construct the validators
 	var validators [3]types.Validator
 	powers := []int64{9, 8, 7}
 	for i, power := range powers {
@@ -358,7 +358,8 @@ func TestGetValidatorSortingUnmixed(t *testing.T) {
 		app.StakingKeeper.PowerReduction(ctx).MulRaw(100),
 		app.StakingKeeper.PowerReduction(ctx),
 		app.StakingKeeper.PowerReduction(ctx).MulRaw(400),
-		app.StakingKeeper.PowerReduction(ctx).MulRaw(200)}
+		app.StakingKeeper.PowerReduction(ctx).MulRaw(200),
+	}
 	n := len(amts)
 	var validators [5]types.Validator
 	for i, amt := range amts {
@@ -451,7 +452,8 @@ func TestGetValidatorSortingMixed(t *testing.T) {
 		app.StakingKeeper.PowerReduction(ctx).MulRaw(100),
 		app.StakingKeeper.PowerReduction(ctx),
 		app.StakingKeeper.PowerReduction(ctx).MulRaw(400),
-		app.StakingKeeper.PowerReduction(ctx).MulRaw(200)}
+		app.StakingKeeper.PowerReduction(ctx).MulRaw(200),
+	}
 
 	var validators [5]types.Validator
 	for i, amt := range amts {

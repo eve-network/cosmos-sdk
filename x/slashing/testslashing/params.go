@@ -1,7 +1,7 @@
 package testslashing
 
 import (
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 )
 
 // TestParams construct default slashing params for tests.

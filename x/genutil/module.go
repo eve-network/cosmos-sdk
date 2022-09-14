@@ -15,7 +15,7 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/iqlusioninc/liquidity-staking-module/x/genutil/types"
+	"github.com/cosmos/cosmos-sdk/x/genutil/types"
 )
 
 var (
@@ -82,7 +82,6 @@ func NewAppModule(accountKeeper types.AccountKeeper,
 	stakingKeeper types.StakingKeeper, deliverTx deliverTxfn,
 	txEncodingConfig client.TxEncodingConfig,
 ) module.AppModule {
-
 	return module.NewGenesisOnlyAppModule(AppModule{
 		AppModuleBasic:   AppModuleBasic{},
 		accountKeeper:    accountKeeper,

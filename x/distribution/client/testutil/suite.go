@@ -12,10 +12,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/testutil"
 	clitestutil "github.com/cosmos/cosmos-sdk/testutil/cli"
+	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/cosmos/cosmos-sdk/x/distribution/client/cli"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	"github.com/iqlusioninc/liquidity-staking-module/testutil/network"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/client/cli"
 )
 
 type IntegrationTestSuite struct {
@@ -690,11 +690,13 @@ func (s *IntegrationTestSuite) TestGetCmdSubmitProposal() {
 }`
 
 	// fund some tokens to the community pool
-	args := []string{sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(5431))).String(),
+	args := []string{
+		sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(5431))).String(),
 		fmt.Sprintf("--%s=%s", flags.FlagFrom, val.Address.String()),
 		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
 		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
-		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(10))).String())}
+		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(10))).String()),
+	}
 
 	invalidPropFile := testutil.WriteToNewTempFile(s.T(), invalidProp)
 	cmd := cli.NewFundCommunityPoolCmd()

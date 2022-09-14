@@ -9,7 +9,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module
@@ -30,7 +30,6 @@ func GetQueryCmd() *cobra.Command {
 	)
 
 	return slashingQueryCmd
-
 }
 
 // GetCmdQuerySigningInfo implements the command to query signing info.

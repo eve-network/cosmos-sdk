@@ -10,9 +10,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/types/query"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkdistr "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 var _ types.QueryServer = Keeper{}
@@ -94,7 +94,6 @@ func (k Keeper) ValidatorSlashes(c context.Context, req *types.QueryValidatorSla
 	pageRes, err := query.FilteredPaginate(slashesStore, req.Pagination, func(key []byte, value []byte, accumulate bool) (bool, error) {
 		var result types.ValidatorSlashEvent
 		err := k.cdc.Unmarshal(value, &result)
-
 		if err != nil {
 			return false, err
 		}
@@ -108,7 +107,6 @@ func (k Keeper) ValidatorSlashes(c context.Context, req *types.QueryValidatorSla
 		}
 		return true, nil
 	})
-
 	if err != nil {
 		return nil, err
 	}

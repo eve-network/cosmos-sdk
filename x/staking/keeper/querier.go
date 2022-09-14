@@ -10,8 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 // creates a querier for staking REST endpoints
@@ -108,7 +107,7 @@ func queryValidator(ctx sdk.Context, req abci.RequestQuery, k Keeper, legacyQuer
 
 	validator, found := k.GetValidator(ctx, params.ValidatorAddr)
 	if !found {
-		return nil, sdkstaking.ErrNoValidatorFound
+		return nil, types.ErrNoValidatorFound
 	}
 
 	res, err := codec.MarshalJSONIndent(legacyQuerierCdc, validator)
@@ -302,7 +301,7 @@ func queryDelegation(ctx sdk.Context, req abci.RequestQuery, k Keeper, legacyQue
 
 	delegation, found := k.GetDelegation(ctx, delAddr, valAddr)
 	if !found {
-		return nil, sdkstaking.ErrNoDelegation
+		return nil, types.ErrNoDelegation
 	}
 
 	delegationResp, err := DelegationToDelegationResponse(ctx, k, delegation)
@@ -338,7 +337,7 @@ func queryUnbondingDelegation(ctx sdk.Context, req abci.RequestQuery, k Keeper, 
 
 	unbond, found := k.GetUnbondingDelegation(ctx, delAddr, valAddr)
 	if !found {
-		return nil, sdkstaking.ErrNoUnbondingDelegation
+		return nil, types.ErrNoUnbondingDelegation
 	}
 
 	res, err := codec.MarshalJSONIndent(legacyQuerierCdc, unbond)
@@ -363,7 +362,7 @@ func queryRedelegations(ctx sdk.Context, req abci.RequestQuery, k Keeper, legacy
 	case !params.DelegatorAddr.Empty() && !params.SrcValidatorAddr.Empty() && !params.DstValidatorAddr.Empty():
 		redel, found := k.GetRedelegation(ctx, params.DelegatorAddr, params.SrcValidatorAddr, params.DstValidatorAddr)
 		if !found {
-			return nil, sdkstaking.ErrNoRedelegation
+			return nil, types.ErrNoRedelegation
 		}
 
 		redels = []types.Redelegation{redel}
@@ -400,7 +399,7 @@ func queryHistoricalInfo(ctx sdk.Context, req abci.RequestQuery, k Keeper, legac
 
 	hi, found := k.GetHistoricalInfo(ctx, params.Height)
 	if !found {
-		return nil, sdkstaking.ErrNoHistoricalInfo
+		return nil, types.ErrNoHistoricalInfo
 	}
 
 	res, err := codec.MarshalJSONIndent(legacyQuerierCdc, hi)
@@ -449,7 +448,7 @@ func queryParameters(ctx sdk.Context, k Keeper, legacyQuerierCdc *codec.LegacyAm
 func DelegationToDelegationResponse(ctx sdk.Context, k Keeper, del types.Delegation) (types.DelegationResponse, error) {
 	val, found := k.GetValidator(ctx, del.GetValidatorAddr())
 	if !found {
-		return types.DelegationResponse{}, sdkstaking.ErrNoValidatorFound
+		return types.DelegationResponse{}, types.ErrNoValidatorFound
 	}
 
 	delegatorAddress, err := sdk.AccAddressFromBech32(del.DelegatorAddress)
@@ -502,7 +501,7 @@ func RedelegationsToRedelegationResponses(
 
 		val, found := k.GetValidator(ctx, valDstAddr)
 		if !found {
-			return nil, sdkstaking.ErrNoValidatorFound
+			return nil, types.ErrNoValidatorFound
 		}
 
 		entryResponses := make([]types.RedelegationEntryResponse, len(redel.Entries))

@@ -1,7 +1,7 @@
 package keeper_test
 
 import (
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/types"
+	"github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 func (suite *KeeperTestSuite) TestGetLastTokenizeShareRecordId() {

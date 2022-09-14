@@ -8,12 +8,12 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkstaking "github.com/cosmos/cosmos-sdk/x/staking/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking"
-	"github.com/iqlusioninc/liquidity-staking-module/x/staking/teststaking"
+	"github.com/cosmos/cosmos-sdk/x/slashing"
+	"github.com/cosmos/cosmos-sdk/x/staking"
+	"github.com/cosmos/cosmos-sdk/x/staking/teststaking"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 )
 
 func TestBeginBlocker(t *testing.T) {
@@ -97,5 +97,5 @@ func TestBeginBlocker(t *testing.T) {
 	// validator should be jailed
 	validator, found := app.StakingKeeper.GetValidatorByConsAddr(ctx, sdk.GetConsAddress(pk))
 	require.True(t, found)
-	require.Equal(t, sdkstaking.Unbonding, validator.GetStatus())
+	require.Equal(t, stakingtypes.Unbonding, validator.GetStatus())
 }

@@ -7,8 +7,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
+	"github.com/cosmos/cosmos-sdk/x/slashing/keeper"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 )
 
 // BeginBlocker check for infraction evidence or downtime of validators

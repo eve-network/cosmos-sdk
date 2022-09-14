@@ -13,8 +13,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
 )
 
 // Transaction flags for the x/distribution module
@@ -55,7 +55,6 @@ func newSplitAndApply(
 	genOrBroadcastFn newGenerateOrBroadcastFunc, clientCtx client.Context,
 	fs *pflag.FlagSet, msgs []sdk.Msg, chunkSize int,
 ) error {
-
 	if chunkSize == 0 {
 		return genOrBroadcastFn(clientCtx, fs, msgs...)
 	}

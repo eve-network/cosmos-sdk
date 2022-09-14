@@ -9,13 +9,13 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
+	simapp "github.com/cosmos/cosmos-sdk/simapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	simapp "github.com/iqlusioninc/liquidity-staking-module/app"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/testslashing"
-	"github.com/iqlusioninc/liquidity-staking-module/x/slashing/types"
+	"github.com/cosmos/cosmos-sdk/x/slashing/testslashing"
+	"github.com/cosmos/cosmos-sdk/x/slashing/types"
 )
 
 type SlashingTestSuite struct {
@@ -91,7 +91,7 @@ func (suite *SlashingTestSuite) TestGRPCSigningInfos() {
 	})
 
 	// verify all values are returned without pagination
-	var infoResp, err = queryClient.SigningInfos(gocontext.Background(),
+	infoResp, err := queryClient.SigningInfos(gocontext.Background(),
 		&types.QuerySigningInfosRequest{Pagination: nil})
 	suite.NoError(err)
 	suite.Equal(signingInfos, infoResp.Info)

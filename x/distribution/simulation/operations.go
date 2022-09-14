@@ -9,10 +9,10 @@ import (
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/cosmos/cosmos-sdk/x/distribution/keeper"
+	"github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/keeper"
-	"github.com/iqlusioninc/liquidity-staking-module/x/distribution/types"
-	stakingkeeper "github.com/iqlusioninc/liquidity-staking-module/x/staking/keeper"
+	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 )
 
 const DefaultWeightMsgWithdrawAllTokenizeShareRecordReward int = 50
@@ -265,7 +265,6 @@ func SimulateMsgWithdrawTokenizeShareRecordReward(ak types.AccountKeeper, bk typ
 	return func(
 		r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
-
 		rewardOwner, _ := simtypes.RandomAcc(r, accs)
 
 		records := sk.GetAllTokenizeShareRecords(ctx)
